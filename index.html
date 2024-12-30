@@ -10,6 +10,7 @@
             background-color: #f0f8ff;
             overflow: hidden;
         }
+
         .box {
             width: 50px;
             height: 50px;
@@ -26,16 +27,42 @@
                 transform: translate(0, 0) rotate(0deg);
             }
             25% {
-                transform: translate(80vw, 0) rotate(90deg);
+                transform: translate(calc(100vw - 50px), 0) rotate(90deg);
             }
             50% {
-                transform: translate(80vw, 80vh) rotate(180deg);
+                transform: translate(calc(100vw - 50px), calc(100vh - 50px)) rotate(180deg);
             }
             75% {
-                transform: translate(0, 80vh) rotate(270deg);
+                transform: translate(0, calc(100vh - 50px)) rotate(270deg);
             }
             100% {
                 transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .box {
+                width: 40px;
+                height: 40px;
+                animation: moveAroundMobile 4s infinite ease-in-out;
+            }
+
+            @keyframes moveAroundMobile {
+                0% {
+                    transform: translate(0, 0) rotate(0deg);
+                }
+                25% {
+                    transform: translate(calc(100vw - 40px), 0) rotate(90deg);
+                }
+                50% {
+                    transform: translate(calc(100vw - 40px), calc(100vh - 40px)) rotate(180deg);
+                }
+                75% {
+                    transform: translate(0, calc(100vh - 40px)) rotate(270deg);
+                }
+                100% {
+                    transform: translate(0, 0) rotate(360deg);
+                }
             }
         }
     </style>
