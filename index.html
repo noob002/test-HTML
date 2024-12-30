@@ -165,6 +165,8 @@
         function fadeOutMusic() {
             const music = document.getElementById('backgroundMusic');
             let volume = 1.0; // 처음 볼륨은 1.0 (최대)
+            music.play(); // 배경음악이 시작되도록 함
+
             const interval = setInterval(() => {
                 if (volume > 0) {
                     volume -= 0.05; // 볼륨을 서서히 줄임
