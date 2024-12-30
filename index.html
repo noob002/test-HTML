@@ -8,7 +8,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #121212; /* 기본 어두운 배경색 */
+            background-color: #121212; /* 어두운 배경색 */
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
@@ -28,12 +28,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border-radius: 50%; /* 동그라미로 만들기 */
+            border-radius: 50%; /* 동그라미 모양 */
         }
 
         /* 메시지 */
         #message {
-            display: none; /* 처음엔 메시지를 숨김 */
+            display: none; /* 처음에는 숨김 */
             font-size: 24px;
             color: white;
             text-align: center;
@@ -42,17 +42,17 @@
             left: 50%;
             transform: translate(-50%, -50%);
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.7); /* 메시지 배경색 */
+            background-color: rgba(0, 0, 0, 0.7);
             border-radius: 10px;
         }
 
         /* YouTube 영상 삽입 */
         iframe {
             position: absolute;
-            top: 10px; /* 화면의 상단 여백 */
-            left: 10px; /* 화면의 좌측 여백 */
-            width: 120px; /* 영상 크기 */
-            height: 68px; /* 영상 크기 */
+            top: 10px;
+            left: 10px;
+            width: 120px;
+            height: 68px;
             border: none;
         }
 
@@ -66,10 +66,10 @@
             background-color: #000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 3s ease-in-out; /* 서서히 어두워지도록 설정 */
+            transition: opacity 3s ease-in-out;
         }
 
-        /* 모바일 및 데스크탑 반응형 디자인 */
+        /* 반응형 디자인 */
         @media (max-width: 768px) {
             .ball {
                 width: 80px;
@@ -118,10 +118,10 @@
     <audio id="backgroundMusic" src="your-audio-file.mp3" loop></audio>
 
     <script>
-        // 동그라미 탱탱볼 코드
+        // 동그라미 탱탱볼 설정
         const ball = document.querySelector('.ball');
         const ballSize = 100; // 공의 크기
-        const messages = ["너의", "시간을", "뺏는다"]; // 텍스트 배열
+        const messages = ["너의", "시간을", "뺏는다"]; // 텍스트 메시지 배열
         let messageIndex = 0;
 
         // 초기 위치와 속도 설정
@@ -130,86 +130,80 @@
         let velocityX = 3; // X축 속도
         let velocityY = 3; // Y축 속도
 
-        // YouTube iframe
-        const video = document.getElementById('video');
-        let videoPosX = 10; // 영상의 초기 X 위치
-        let videoPosY = 10; // 영상의 초기 Y 위치
-        let videoVelocityX = 3; // 영상의 X축 속도
-        let videoVelocityY = 3; // 영상의 Y축 속도
-
-        // 움직이는 동그라미
+        // 동그라미 탱탱볼 이동 함수
         function moveBall() {
             posX += velocityX;
             posY += velocityY;
 
-            // 벽에 부딪힐 때마다 방향 반전 및 텍스트 변경
+            // 벽에 부딪히면 방향 반전
             if (posX <= 0 || posX >= window.innerWidth - ballSize) {
                 velocityX *= -1;
-                updateMessage();
+                updateMessage(); // 메시지 업데이트
             }
             if (posY <= 0 || posY >= window.innerHeight - ballSize) {
                 velocityY *= -1;
-                updateMessage();
+                updateMessage(); // 메시지 업데이트
             }
 
             // 공 위치 적용
             ball.style.left = `${posX}px`;
             ball.style.top = `${posY}px`;
 
-            // YouTube 영상 위치 조정
-            videoPosX += videoVelocityX;
-            videoPosY += videoVelocityY;
-
-            if (videoPosX <= 0 || videoPosX >= window.innerWidth - 120) {
-                videoVelocityX *= -1; // 영상의 X 방향 반전
-            }
-            if (videoPosY <= 0 || videoPosY >= window.innerHeight - 68) {
-                videoVelocityY *= -1; // 영상의 Y 방향 반전
-            }
-
-            // 영상 위치 적용
-            video.style.left = `${videoPosX}px`;
-            video.style.top = `${videoPosY}px`;
-
             // 계속해서 움직임
             requestAnimationFrame(moveBall);
         }
 
-        // 메시지 순차적으로 업데이트
+        // 메시지 순차적으로 변경
         function updateMessage() {
             messageIndex = (messageIndex + 1) % messages.length;
             ball.textContent = messages[messageIndex];
         }
 
-        moveBall(); // 움직임 시작
+        moveBall(); // 공 움직임 시작
 
-        // 배경 음악 서서히 볼륨 줄여주는 함수
+        // 배경 음악 볼륨 서서히 줄여주는 함수
         function fadeOutMusic() {
             const music = document.getElementById('backgroundMusic');
-            let volume = 1.0; // 처음 볼륨은 1.0 (최대)
-            music.play(); // 배경음악이 시작되도록 함
+            let volume = 1.0; // 시작 볼륨
+            music.play(); // 음악 시작
 
             const interval = setInterval(() => {
                 if (volume > 0) {
-                    volume -= 0.05; // 볼륨을 서서히 줄임
+                    volume -= 0.05; // 볼륨을 서서히 감소
                     music.volume = volume;
                 } else {
-                    clearInterval(interval); // 볼륨이 0이 되면 멈춤
+                    clearInterval(interval); // 볼륨이 0이면 종료
                 }
-            }, 150); // 150ms마다 볼륨을 줄임
+            }, 150); // 150ms마다 볼륨 줄이기
         }
 
-        // 사용자 상호작용 시 음악 자동 재생
+        // YouTube 영상 소리 서서히 줄여주는 함수
+        function fadeOutVideoSound() {
+            const videoPlayer = document.getElementById('video');
+            let volume = 1.0;
+
+            const interval = setInterval(() => {
+                if (volume > 0) {
+                    volume -= 0.05;
+                    videoPlayer.contentWindow.postMessage('{"event":"command","func":"setVolume","args":[' + volume * 100 + ']}', '*');
+                } else {
+                    clearInterval(interval);
+                }
+            }, 150); // 150ms마다 소리 줄이기
+        }
+
+        // 클릭 이벤트로 음악 자동 재생
         document.body.addEventListener('click', function() {
             const music = document.getElementById('backgroundMusic');
             if (music.paused) {
-                music.play(); // 클릭 시 음악 재생
+                music.play(); // 클릭 시 음악 시작
             }
         });
 
-        // 15초 후 화면 전환, 메시지 표시 및 음악 줄이기
+        // 15초 후 화면 전환 및 메시지 표시
         setTimeout(() => {
-            // 비디오 숨기기
+            // 유튜브 영상 숨기기
+            const video = document.getElementById('video');
             video.style.display = 'none';
 
             // 메시지 표시
@@ -218,18 +212,25 @@
 
             // 화면 어두워지기
             const darkLayer = document.getElementById('darkLayer');
-            darkLayer.style.opacity = 1; // 화면을 서서히 어두워지게 설정
+            darkLayer.style.opacity = 1;
 
-            // 음악 서서히 줄이기
+            // 배경 음악 서서히 줄이기
             fadeOutMusic();
+
+            // 유튜브 영상 소리 서서히 줄이기
+            fadeOutVideoSound();
 
             // 3초 후 리다이렉션
             setTimeout(() => {
                 // 새 탭에서 링크로 이동 후 원래 페이지 닫기
                 window.location.href = "https://youtu.be/dQw4w9WgXcQ?si=A4HciTO9tDl5qFNP";
-                window.close(); // 원래 창을 닫습니다
+                window.close(); // 현재 창 닫기
             }, 3000);
         }, 15000); // 15초 후
+
     </script>
+
+    <!-- YouTube API 로드 -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
