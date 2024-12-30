@@ -130,6 +130,13 @@
         let velocityX = 3; // X축 속도
         let velocityY = 3; // Y축 속도
 
+        // YouTube iframe
+        const video = document.getElementById('video');
+        let videoPosX = 10; // 영상의 초기 X 위치
+        let videoPosY = 10; // 영상의 초기 Y 위치
+        let videoVelocityX = 3; // 영상의 X축 속도
+        let videoVelocityY = 3; // 영상의 Y축 속도
+
         // 움직이는 동그라미
         function moveBall() {
             posX += velocityX;
@@ -148,6 +155,21 @@
             // 공 위치 적용
             ball.style.left = `${posX}px`;
             ball.style.top = `${posY}px`;
+
+            // YouTube 영상 위치 조정
+            videoPosX += videoVelocityX;
+            videoPosY += videoVelocityY;
+
+            if (videoPosX <= 0 || videoPosX >= window.innerWidth - 120) {
+                videoVelocityX *= -1; // 영상의 X 방향 반전
+            }
+            if (videoPosY <= 0 || videoPosY >= window.innerHeight - 68) {
+                videoVelocityY *= -1; // 영상의 Y 방향 반전
+            }
+
+            // 영상 위치 적용
+            video.style.left = `${videoPosX}px`;
+            video.style.top = `${videoPosY}px`;
 
             // 계속해서 움직임
             requestAnimationFrame(moveBall);
@@ -188,7 +210,6 @@
         // 15초 후 화면 전환, 메시지 표시 및 음악 줄이기
         setTimeout(() => {
             // 비디오 숨기기
-            const video = document.getElementById('video');
             video.style.display = 'none';
 
             // 메시지 표시
