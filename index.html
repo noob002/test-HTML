@@ -41,6 +41,9 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7); /* 메시지 배경색 */
+            border-radius: 10px;
         }
 
         /* YouTube 영상 삽입 */
@@ -48,8 +51,8 @@
             position: absolute;
             top: 10px; /* 화면의 상단 여백 */
             left: 10px; /* 화면의 좌측 여백 */
-            width: 150px; /* 영상 크기 */
-            height: 85px; /* 영상 크기 */
+            width: 120px; /* 영상 크기 */
+            height: 68px; /* 영상 크기 */
             border: none;
         }
 
@@ -64,6 +67,33 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 3s ease-in-out; /* 서서히 어두워지도록 설정 */
+        }
+
+        /* 모바일 및 데스크탑 반응형 디자인 */
+        @media (max-width: 768px) {
+            .ball {
+                width: 80px;
+                height: 80px;
+                font-size: 14px;
+            }
+
+            iframe {
+                width: 100px;
+                height: 56px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ball {
+                width: 70px;
+                height: 70px;
+                font-size: 12px;
+            }
+
+            iframe {
+                width: 90px;
+                height: 50px;
+            }
         }
     </style>
 </head>
@@ -164,7 +194,9 @@
 
             // 3초 후 리다이렉션
             setTimeout(() => {
+                // 새 탭에서 링크로 이동 후 원래 페이지 닫기
                 window.location.href = "https://youtu.be/dQw4w9WgXcQ?si=A4HciTO9tDl5qFNP";
+                window.close(); // 원래 창을 닫습니다
             }, 3000);
         }, 15000); // 15초 후
     </script>
