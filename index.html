@@ -3,49 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>시간을 뺏다</title>
+    <title>탱탱볼과 시간 뺏기</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #121212; /* 어두운 배경색 */
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: #121212; /* 기본 어두운 배경색 */
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
 
+        /* 동그라미 탱탱볼 */
+        .ball {
+            width: 100px;
+            height: 100px;
+            background-color: #ff4500;
+            color: #ffffff; /* 텍스트 색상 */
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%; /* 동그라미로 만들기 */
+        }
+
+        /* 메시지 */
         #message {
             display: none; /* 처음엔 메시지를 숨김 */
             font-size: 24px;
+            color: white;
             text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
+        /* YouTube 영상 삽입 */
         iframe {
             position: absolute;
-            top: 10px; /* 화면 상단 여백 */
-            left: 10px; /* 화면 좌측 여백 */
+            top: 10px; /* 화면의 상단 여백 */
+            left: 10px; /* 화면의 좌측 여백 */
             width: 150px; /* 영상 크기 */
             height: 85px; /* 영상 크기 */
             border: none;
         }
+
+        /* 화면 어두워지기 애니메이션 */
+        .darken {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 3s ease-in-out; /* 서서히 어두워지도록 설정 */
+        }
     </style>
 </head>
 <body>
+
     <!-- YouTube 영상 삽입 -->
     <iframe id="video" 
         src="https://www.youtube.com/embed/xy_NKN75Jhw?autoplay=1&controls=0&rel=0&playsinline=1" 
         allow="autoplay; encrypted-media">
     </iframe>
 
-    <!-- 검은 화면에 뜨는 메시지 -->
+    <!-- 동그라미 탱탱볼 -->
+    <div class="ball">너의</div>
+
+    <!-- 메시지 -->
     <div id="message">당신의 시간을 온전히 뺏었습니다</div>
 
+    <!-- 어두워지는 레이어 -->
+    <div id="darkLayer" class="darken"></div>
+
+    <!-- 배경 음악 -->
+    <audio id="backgroundMusic" src="your-audio-file.mp3" autoplay loop></audio>
+
     <script>
-        // 15초 후 화면 전환
+        // 동그라미 탱탱볼 코드
+        const ball = document.querySelector('.ball');
+        const ballSize = 100; // 공의 크기
+        const messages = ["너의", "시간을", "뺏는다"]; // 텍스트 배열
+        let messageIndex = 0;
+
+        // 초기 위치와 속도 설정
+        let posX = Math.random() * (window.innerWidth - ballSize);
+        let posY = Math.random() * (window.innerHeight - ballSize);
+        let velocityX = 3; // X축 속도
+        let velocityY = 3; // Y축 속도
+
+        // 움직이는 동그라미
+        function moveBall() {
+            posX += velocityX;
+            posY += velocityY;
+
+            // 벽에 부딪힐 때마다 방향 반전 및 텍스트 변경
+            if (posX <= 0 || posX >= window.innerWidth - ballSize) {
+                velocityX *= -1;
+                updateMessage();
+            }
+            if (posY <= 0 || posY >= window.innerHeight - ballSize) {
+                velocityY *= -1;
+                updateMessage();
+            }
+
+            // 공 위치 적용
+            ball.style.left = `${posX}px`;
+            ball.style.top = `${posY}px`;
+
+            // 계속해서 움직임
+            requestAnimationFrame(moveBall);
+        }
+
+        // 메시지 순차적으로 업데이트
+        function updateMessage() {
+            messageIndex = (messageIndex + 1) % messages.length;
+            ball.textContent = messages[messageIndex];
+        }
+
+        moveBall(); // 움직임 시작
+
+        // 배경 음악 서서히 볼륨 줄여주는 함수
+        function fadeOutMusic() {
+            const music = document.getElementById('backgroundMusic');
+            let volume = 1.0; // 처음 볼륨은 1.0 (최대)
+            const interval = setInterval(() => {
+                if (volume > 0) {
+                    volume -= 0.05; // 볼륨을 서서히 줄임
+                    music.volume = volume;
+                } else {
+                    clearInterval(interval); // 볼륨이 0이 되면 멈춤
+                }
+            }, 150); // 150ms마다 볼륨을 줄임
+        }
+
+        // 15초 후 화면 전환, 메시지 표시 및 음악 줄이기
         setTimeout(() => {
             // 비디오 숨기기
             const video = document.getElementById('video');
@@ -55,11 +155,18 @@
             const message = document.getElementById('message');
             message.style.display = 'block';
 
-            // 3초 뒤 리다이렉션
+            // 화면 어두워지기
+            const darkLayer = document.getElementById('darkLayer');
+            darkLayer.style.opacity = 1; // 화면을 서서히 어두워지게 설정
+
+            // 음악 서서히 줄이기
+            fadeOutMusic();
+
+            // 3초 후 리다이렉션
             setTimeout(() => {
                 window.location.href = "https://youtu.be/dQw4w9WgXcQ?si=A4HciTO9tDl5qFNP";
             }, 3000);
-        }, 15000);
+        }, 15000); // 15초 후
     </script>
 </body>
 </html>
