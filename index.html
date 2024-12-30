@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>움직이는 네모</title>
+    <title>탱탱볼 네모</title>
     <style>
         body {
             margin: 0;
@@ -16,58 +16,46 @@
             height: 50px;
             background-color: #ff4500;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: moveAround 5s infinite ease-in-out;
-        }
-
-        @keyframes moveAround {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            25% {
-                transform: translate(calc(100vw - 50px), 0) rotate(90deg);
-            }
-            50% {
-                transform: translate(calc(100vw - 50px), calc(100vh - 50px)) rotate(180deg);
-            }
-            75% {
-                transform: translate(0, calc(100vh - 50px)) rotate(270deg);
-            }
-            100% {
-                transform: translate(0, 0) rotate(360deg);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .box {
-                width: 40px;
-                height: 40px;
-                animation: moveAroundMobile 4s infinite ease-in-out;
-            }
-
-            @keyframes moveAroundMobile {
-                0% {
-                    transform: translate(0, 0) rotate(0deg);
-                }
-                25% {
-                    transform: translate(calc(100vw - 40px), 0) rotate(90deg);
-                }
-                50% {
-                    transform: translate(calc(100vw - 40px), calc(100vh - 40px)) rotate(180deg);
-                }
-                75% {
-                    transform: translate(0, calc(100vh - 40px)) rotate(270deg);
-                }
-                100% {
-                    transform: translate(0, 0) rotate(360deg);
-                }
-            }
         }
     </style>
 </head>
 <body>
     <div class="box"></div>
+    <script>
+        const box = document.querySelector('.box');
+        const boxSize = 50; // 박스 크기
+        let posX = Math.random() * (window.innerWidth - boxSize);
+        let posY = Math.random() * (window.innerHeight - boxSize);
+        let velocityX = 4; // X 방향 속도
+        let velocityY = 3; // Y 방향 속도
+
+        function moveBox() {
+            // 위치 업데이트
+            posX += velocityX;
+            posY += velocityY;
+
+            // 벽 충돌 감지 및 반전
+            if (posX <= 0 || posX >= window.innerWidth - boxSize) {
+                velocityX *= -1;
+            }
+            if (posY <= 0 || posY >= window.innerHeight - boxSize) {
+                velocityY *= -1;
+            }
+
+            // 새로운 위치 적용
+            box.style.left = `${posX}px`;
+            box.style.top = `${posY}px`;
+
+            // 다음 프레임 호출
+            requestAnimationFrame(moveBox);
+        }
+
+        // 초기 위치 설정
+        box.style.left = `${posX}px`;
+        box.style.top = `${posY}px`;
+
+        // 움직임 시작
+        moveBox();
+    </script>
 </body>
 </html>
