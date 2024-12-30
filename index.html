@@ -1,51 +1,46 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>하찮은 웹페이지</title>
+    <title>움직이는 네모</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f9f9f9;
+            margin: 0;
+            background-color: #f0f8ff;
+            overflow: hidden;
         }
-        h1 {
-            color: #ff6347;
-            font-size: 2em;
-            margin-top: 50px;
-        }
-        p {
-            color: #555;
-            font-size: 1.2em;
-        }
-        button {
-            background-color: #ff6347;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
+        .box {
+            width: 50px;
+            height: 50px;
             background-color: #ff4500;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: moveAround 5s infinite ease-in-out;
         }
-        .hidden {
-            display: none;
+
+        @keyframes moveAround {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(80vw, 0) rotate(90deg);
+            }
+            50% {
+                transform: translate(80vw, 80vh) rotate(180deg);
+            }
+            75% {
+                transform: translate(0, 80vh) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
         }
     </style>
 </head>
 <body>
-    <h1>😎 하찮은 웹페이지 😎</h1>
-    <p>이 웹페이지는 정말 쓸모없습니다.</p>
-    <button onclick="showSecret()">눌러보세요</button>
-    <p id="secret" class="hidden">✨ 비밀 메시지: 하찮지만 귀엽죠? ✨</p>
-
-    <script>
-        function showSecret() {
-            const secret = document.getElementById('secret');
-            secret.classList.remove('hidden');
-        }
-    </script>
+    <div class="box"></div>
 </body>
 </html>
