@@ -7,27 +7,38 @@
     <style>
         body {
             margin: 0;
-            background-color: #f0f8ff;
+            background-color: #121212; /* 어두운 배경색 */
             overflow: hidden;
         }
 
         .box {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
             background-color: #ff4500;
+            color: #fff; /* 텍스트 색상 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            text-align: center;
             position: absolute;
         }
     </style>
 </head>
 <body>
-    <div class="box"></div>
+    <div class="box">너의</div>
     <script>
         const box = document.querySelector('.box');
-        const boxSize = 50; // 박스 크기
+        const boxSize = 100; // 박스 크기
+        const messages = ["너의", "시간을", "뺏는다"]; // 텍스트 배열
+        let messageIndex = 0;
+
         let posX = Math.random() * (window.innerWidth - boxSize);
         let posY = Math.random() * (window.innerHeight - boxSize);
-        let velocityX = 4; // X 방향 속도
-        let velocityY = 3; // Y 방향 속도
+        let velocityX = 2; // X 방향 속도
+        let velocityY = 2; // Y 방향 속도
 
         function moveBox() {
             // 위치 업데이트
@@ -37,9 +48,11 @@
             // 벽 충돌 감지 및 반전
             if (posX <= 0 || posX >= window.innerWidth - boxSize) {
                 velocityX *= -1;
+                updateMessage();
             }
             if (posY <= 0 || posY >= window.innerHeight - boxSize) {
                 velocityY *= -1;
+                updateMessage();
             }
 
             // 새로운 위치 적용
@@ -48,6 +61,12 @@
 
             // 다음 프레임 호출
             requestAnimationFrame(moveBox);
+        }
+
+        function updateMessage() {
+            // 텍스트 업데이트
+            messageIndex = (messageIndex + 1) % messages.length;
+            box.textContent = messages[messageIndex];
         }
 
         // 초기 위치 설정
